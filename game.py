@@ -133,12 +133,4 @@ def draw_text(heading_text,sub_text):
 
 
 
-
-
-
-
-
-
-
-
 pgzrun.go()
