@@ -9,7 +9,7 @@ CENTRE_Y = HEIGHT/2
 CENTER = (CENTER_X,CENTRE_Y)
 FINAL_LEVEL = 6
 START_SPEED = 10
-ITEMS = ['battery','bottle','chips','plastic']
+ITEMS = ['plastic','chips','bottle','battery']
 
 game_over = False
 game_complete  = False
@@ -18,11 +18,29 @@ items = []
 animations = []
 
 def draw():
+    global items,current_level,game_over,game_complete
     screen.clear()
     screen.blit('bg',(0,0))
+    if game_over:
+        draw_text('GAME OVER','Try again ')
+    elif game_complete:
+        draw_text('YOU WON','well done')
+    else:
+        for item in items:
+            item.draw()
+    
 
 def update():
-    pass
+    global items
+    if len(items) == 0:
+        items = make_items(current_level)
+
+def make_items(extra_items):
+    items_to_create = get_option(extra_items)
+    new_items = create_items(items_to_create)
+    layout_items(new_items)
+    animate_items(new_items)
+    return new_items
 
 def get_option(extra_items):
     items_to_create = ['paper']
@@ -62,7 +80,7 @@ def handle_game_over():
 def on_mouse_down(pos):
     global items, current_level
     for item in items:
-        if item.colllidepoint(pos):
+        if item.collidepoint(pos):
             if 'paper' in item.image:
                 handle_game_completed()
             else:
